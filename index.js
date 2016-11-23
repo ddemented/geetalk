@@ -5,11 +5,19 @@ const bodyParser = require('body-parser')
 const request = require('request')
 const app = express()
 
-app.set('port', (process.env.PORT || 5000))
 
-// Process application/x-www-form-urlencoded && application/json
-app.use(bodyParser.urlencoded({extended: false}))
-app.use(bodyParser.json())
+var watson = require('watson-developer-cloud');
+
+var conversation = watson.conversation({
+  username: process.env.WATSON_USERNAME,
+  password: process.env.WATSON_PASSWORD ,
+  version: 'v1',
+  version_date: '2016-09-20'
+})
+
+ 
+
+app.set('port', (process.env.PORT || 5000))
 
 // Index route
 app.get('/', function (req, res) {
@@ -43,6 +51,8 @@ function sendTextMessage(sender, text) {
     })
 }
 
+var context = {};  
+
 //For a api endpoint
 app.post('/webhook/', function (req, res) {
     let messaging_events = req.body.entry[0].messaging
@@ -51,7 +61,23 @@ app.post('/webhook/', function (req, res) {
         let sender = event.sender.id
         if (event.message && event.message.text) {
             let text = event.message.text
-            sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+             
+
+            conversation.message({
+                workspace_id: process.env.WATSON_WORKSPACE_ID ,
+                input: {'text': text},
+                context: context
+            },  function(err, response) {
+                if (err)
+                 console.log('error:', err);
+                else
+                {
+                    sendTextMessage(sender, response.output.text[0]);
+                    
+                }
+            })
+
+            
         }
     }
     res.sendStatus(200)

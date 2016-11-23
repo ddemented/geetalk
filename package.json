@@ -4,13 +4,14 @@
   "description": "blinkbot",
   "main": "index.js",
   "scripts": {
-     "start": "node index.js",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "sanjeev",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.15.2",
+    "botkit-middleware-watson": "^1.0.0",
     "express": "^4.14.0",
     "request": "^2.75.0"
   }

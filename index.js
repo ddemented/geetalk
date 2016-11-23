@@ -74,7 +74,7 @@ app.post('/webhook/', function (req, res) {
                  console.log('error:', err);
                 else
                 {
-                    sendTextMessage(sender, {text: response.output.text[0]});
+                    sendTextMessage(sender, response.output.text[0]);
                     console.log('sent')
                 }
             })

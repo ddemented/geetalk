@@ -20,10 +20,16 @@ var conversation = watson.conversation({
 
 app.set('port', (process.env.PORT || 5000))
 
+// Process application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({extended: false}))
+
+// Process application/json
+app.use(bodyParser.json())
+
 // Index route
 app.get('/', function (req, res) {
     
-    conversation.message({
+    /*conversation.message({
                 workspace_id: process.env.WATSON_WORKSPACE_ID ,
                 input: {'text': 'hello' },
                 context: context
@@ -35,7 +41,9 @@ app.get('/', function (req, res) {
                     res.send(response.output.text[0])
                     
                 }
-    })
+    })*/
+
+    res.send("working")
 
 })
 

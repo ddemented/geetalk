@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const request = require('request')
 const app = express()
 
+const token = process.env.FB_PAGE_ACCESS_TOKEN
 
 var watson = require('watson-developer-cloud');
 
@@ -61,19 +62,20 @@ app.post('/webhook/', function (req, res) {
         let sender = event.sender.id
         if (event.message && event.message.text) {
             let text = event.message.text
-             
+            
+
 
             conversation.message({
                 workspace_id: process.env.WATSON_WORKSPACE_ID ,
-                input: {'text': text},
+                input: {'text': text },
                 context: context
             },  function(err, response) {
                 if (err)
                  console.log('error:', err);
                 else
                 {
-                    sendTextMessage(sender, response.output.text[0]);
-                    
+                    sendTextMessage(sender, {text: response.output.text[0]});
+                    console.log('sent')
                 }
             })
 
@@ -82,8 +84,6 @@ app.post('/webhook/', function (req, res) {
     }
     res.sendStatus(200)
 })
-
-const token = process.env.FB_PAGE_ACCESS_TOKEN
 
 // Spin up the server
 app.listen(app.get('port'), function() {

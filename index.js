@@ -22,7 +22,21 @@ app.set('port', (process.env.PORT || 5000))
 
 // Index route
 app.get('/', function (req, res) {
-    res.send('Hello world, panda gm I am a chat bot!')
+    
+    conversation.message({
+                workspace_id: process.env.WATSON_WORKSPACE_ID ,
+                input: {'text': 'hello' },
+                context: context
+            },  function(err, response) {
+                if (err)
+                 console.log('error:', err);
+                else
+                {
+                    res.send(response.output.text[0])
+                    
+                }
+    })
+
 })
 
 // for Facebook verification and basic setup

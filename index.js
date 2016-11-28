@@ -28,20 +28,6 @@ app.use(bodyParser.json())
 
 // Index route
 app.get('/', function (req, res) {
-    
-    /*conversation.message({
-                workspace_id: process.env.WATSON_WORKSPACE_ID ,
-                input: {'text': 'hello' },
-                context: context
-            },  function(err, response) {
-                if (err)
-                 console.log('error:', err);
-                else
-                {
-                    res.send(response.output.text[0])
-                    
-                }
-    })*/
 
     res.send("working")
 
@@ -98,6 +84,8 @@ app.post('/webhook/', function (req, res) {
                 {
                     sendTextMessage(sender, response.output.text[0]);
                     context = response.context;
+                    context.dialog_turn_counter += 1
+                    context.dialog_request_counter += 1
                     //console.log('sent')
                 }
             })

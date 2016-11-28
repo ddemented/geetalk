@@ -82,7 +82,7 @@ app.post('/webhook/', function (req, res) {
                  console.log('error:', err);
                 else
                 {
-                    sendTextMessage(sender, response.output.text[0]);
+                    response.output.text.forEach(function(text) { sendTextMessage(sender, text) }) 
                     context = response.context;
                     context.dialog_turn_counter += 1
                     context.dialog_request_counter += 1

@@ -8,6 +8,8 @@
 ##Prerequisites
  * Node js
  * NPM
- * express js
+ * express js 
+
+ react
 
 
